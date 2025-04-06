@@ -8,11 +8,9 @@ export default function NotFound() {
         Page Not Found
       </h2>
       <p className="text-gray-600 dark:text-gray-400 max-w-md mb-6">
-        The page you’re looking for doesn’t exist or has been moved. Let’s get you back on track.
+        Looks like you’ve hit a dead end. Let’s get you back.
       </p>
-      <Button href="/" variant="primary">
-        Go Back Home
-      </Button>
+      <Button href="/">🚀 Back to Home</Button>
     </div>
   );
 }
