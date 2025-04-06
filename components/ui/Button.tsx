@@ -15,22 +15,25 @@ export const Button = ({ href, label, className, ...props }: ButtonProps) => {
     <Link
       href={href}
       {...props}
+      role="button"
+      tabIndex={0}
+      aria-label={label}
       className={cn(
-        `relative inline-block px-6 py-3 rounded-xl text-white font-semibold transition-all duration-300 group 
-         bg-white/10 backdrop-blur-md border border-white/20
-         shadow-[0_10px_20px_rgba(0,0,0,0.2)] overflow-hidden`,
+        `inline-block px-6 py-3 rounded-xl text-white font-semibold text-center focus:outline-none focus:ring-2 
+         focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent transition-all duration-300`,
 
-        `before:absolute before:inset-0 before:rounded-xl before:bg-white/20 before:opacity-0
-         before:transition-all before:duration-300 group-hover:before:opacity-10`,
+        // Glassmorphism
+        `bg-white/10 backdrop-blur-md border border-white/20 shadow-lg`,
 
-        `after:absolute after:inset-0 after:rounded-xl after:border after:border-white/10
-         after:transition-all after:duration-300 group-hover:after:scale-105`,
+        // Hover and click feedback
+        `hover:bg-white/20 hover:shadow-xl active:scale-95`,
 
-        `hover:scale-[1.03] active:scale-95`,
+        // Extra visual flair
+        `relative z-10 overflow-hidden`,
         className
       )}
     >
-      <span className="relative z-10">{label}</span>
+      {label}
     </Link>
   );
 };
