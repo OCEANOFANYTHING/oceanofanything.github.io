@@ -12,8 +12,8 @@ export default function NotFound() {
         thirdColor="0, 200, 255"
         fourthColor="80, 0, 100"
         fifthColor="0, 50, 100"
-        pointerColor="255, 255, 255"
         blendingValue="hard-light"
+        // pointerColor removed to prevent fixed white glow
       />
 
       <div className="relative z-10 flex items-center justify-center w-full h-full px-4">
