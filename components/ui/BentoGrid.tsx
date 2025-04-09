@@ -1,19 +1,21 @@
 "use client";
 
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IoCopyOutline } from "react-icons/io5";
-
-// Also install this npm i --save-dev @types/react-lottie
-import Lottie from "react-lottie";
-
 import { cn } from "@/lib/utils";
-
-
+import MagicButton from "../MagicButton";
 import { BackgroundGradientAnimation } from "./GradientBg";
 import GridGlobe from "./GridGlobe";
 import animationData from "@/data/confetti.json";
-import MagicButton from "../MagicButton";
+
+// Import dynamic must come after regular imports
+import dynamic from 'next/dynamic';
+
+// Dynamically import Lottie to prevent "document is not defined" error
+const Lottie = dynamic(() => import('lottie-react'), { 
+  ssr: false,
+  loading: () => <div style={{ height: 200, width: 400 }}></div>
+});
 
 export const BentoGrid = ({
   className,
@@ -59,20 +61,30 @@ export const BentoGridItem = ({
   const rightLists = ["VueJS", "NuxtJS", "GraphQL"];
 
   const [copied, setCopied] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  const defaultOptions = {
-    loop: copied,
-    autoplay: copied,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
+  // Only run on client side
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Reset copied state after 3 seconds
+  useEffect(() => {
+    if (copied) {
+      const timeout = setTimeout(() => {
+        setCopied(false);
+      }, 3000);
+      
+      return () => clearTimeout(timeout);
+    }
+  }, [copied]);
 
   const handleCopy = () => {
-    const text = "hsu@jsmastery.pro";
-    navigator.clipboard.writeText(text);
-    setCopied(true);
+    if (isMounted && !copied) {
+      const text = "hsu@jsmastery.pro";
+      navigator.clipboard.writeText(text);
+      setCopied(true);
+    }
   };
 
   return (
@@ -170,6 +182,7 @@ export const BentoGridItem = ({
                   </span>
                 ))}
               </div>
+              <span className="lg:py-4 lg:px-3 py-4 px-3  rounded-lg text-center bg-[#10132E]"></span>
             </div>
           )}
           {id === 6 && (
@@ -179,11 +192,17 @@ export const BentoGridItem = ({
               {/* remove focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 */}
               {/* add handleCopy() for the copy the text */}
               <div
-                className={`absolute -bottom-5 right-0 ${copied ? "block" : "block"
-                  }`}
+                className={`absolute -bottom-5 right-0 ${copied ? "block" : "block"}`}
               >
-                {/* <img src="/confetti.gif" alt="confetti" /> */}
-                <Lottie options={defaultOptions} height={200} width={400} />
+                {/* Only render Lottie when email is copied and component is mounted */}
+                {isMounted && copied && (
+                  <Lottie 
+                    animationData={animationData}
+                    loop={false}
+                    autoplay={true}
+                    style={{ height: 200, width: 400 }}
+                  />
+                )}
               </div>
 
               <MagicButton
