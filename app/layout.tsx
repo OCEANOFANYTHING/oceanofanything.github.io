@@ -3,8 +3,34 @@ import { Inter } from "next/font/google";
 
 import "./globals.css";
 import { ThemeProvider } from "./provider";
+import { FloatingNav } from "@/components/ui/FloatingNavbar";
+import ScrollAnimationHandler from "@/components/ScrollAnimationHandler";
+import "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
+
+const navItems = [
+  {
+    name: "About",
+    link: "#about",
+  },
+  {
+    name: "Expertise",
+    link: "#expertise",
+  },
+  {
+    name: "Testimonials",
+    link: "#testimonials",
+  },
+  {
+    name: "Projects",
+    link: "#projects",
+  },
+  {
+    name: "Contact",
+    link: "#contact",
+  },
+];
 
 export const metadata: Metadata = {
   title: "OCEANOFANYTHING's Portfolio",
@@ -50,6 +76,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <ScrollAnimationHandler />
+          <FloatingNav navItems={navItems} />
           {children}
         </ThemeProvider>
       </body>
