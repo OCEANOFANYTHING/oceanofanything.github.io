@@ -6,6 +6,16 @@
 .pnp.js
 .yarn/install-state.gz
 
+# development
+.vscode
+/.idea
+/.history
+/.cache
+/.eslintcache
+/.next/cache
+/.turbo
+/.turbo/cache
+
 # testing
 /coverage
 
