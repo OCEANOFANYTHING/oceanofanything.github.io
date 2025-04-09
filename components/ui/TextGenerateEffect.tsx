@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { motion, stagger, useAnimate } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -11,20 +11,29 @@ export const TextGenerateEffect = ({
   className?: string;
 }) => {
   const [scope, animate] = useAnimate();
-  let wordsArray = words.split(" ");
+  const wordsArray = words.split(" ");
+  const hasAnimated = useRef(false);
+  
   useEffect(() => {
-    console.log(wordsArray);
-    animate(
-      "span",
-      {
-        opacity: 1,
-      },
-      {
-        duration: 2,
-        delay: stagger(0.2),
-      }
-    );
-  }, [scope.current]);
+    // Only animate if not already animated
+    if (!hasAnimated.current && scope.current) {
+      hasAnimated.current = true;
+      // Start animation with a small delay to ensure rendering
+      setTimeout(() => {
+        animate(
+          "span",
+          {
+            opacity: 1
+          },
+          {
+            duration: 1.5,
+            delay: stagger(0.1),
+            ease: "easeOut"
+          }
+        );
+      }, 100);
+    }
+  }, [animate, scope]);
 
   const renderWords = () => {
     return (
@@ -33,9 +42,7 @@ export const TextGenerateEffect = ({
           return (
             <motion.span
               key={word + idx}
-              // change here if idx is greater than 3, change the text color to #CBACF9
-              className={` ${idx > 3 ? "text-purple" : "dark:text-white text-black"
-                } opacity-0`}
+              className={`${idx > 3 ? "text-purple" : "dark:text-white text-black"} opacity-0`}
             >
               {word}{" "}
             </motion.span>
@@ -47,10 +54,8 @@ export const TextGenerateEffect = ({
 
   return (
     <div className={cn("font-bold", className)}>
-      {/* mt-4 to my-4 */}
       <div className="my-4">
-        {/* remove  text-2xl from the original */}
-        <div className=" dark:text-white text-black leading-snug tracking-wide">
+        <div className="dark:text-white text-black leading-snug tracking-wide">
           {renderWords()}
         </div>
       </div>
