@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { BackgroundGradientAnimation } from "@/components/ui/GradientBg";
 import { Button } from "@/components/ui/Button";
 
-export default function GlobalError({
+export default function Error({
   error,
   reset,
 }: {
