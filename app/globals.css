@@ -67,19 +67,63 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   * {
-    @apply border-border !scroll-smooth;
+    @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
+    transition: background-color 0.5s;
   }
   button {
     @apply active:outline-none;
+  }
+  section, main > div {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  section.visible, main > div.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Remove transition for initial viewport elements */
+  .no-transition {
+    transition: none !important;
+  }
+
+  /* Specific selector for infinite cards to ensure hover works */
+  .scroller:hover ul.animate-scroll {
+    animation-play-state: paused !important;
   }
 }
 
 @layer utilities {
   .heading {
     @apply font-bold text-4xl md:text-5xl text-center;
+  }
+  .reveal {
+    position: relative;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-100 {
+    transition-delay: 0.1s;
+  }
+  .reveal-delay-200 {
+    transition-delay: 0.2s;
+  }
+  .reveal-delay-300 {
+    transition-delay: 0.3s;
   }
 }
